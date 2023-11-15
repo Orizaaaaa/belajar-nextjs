@@ -5,7 +5,7 @@ const RegisterPage = () => {
     return (
         <div>
             <h3>Register</h3>
-            <p>sudah punya akun? <Link href="/auth/register">login</Link></p>
+            <p>sudah punya akun? <Link href="/auth/login">login</Link></p>
         </div>
     )
 }
