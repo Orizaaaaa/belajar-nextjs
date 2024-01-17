@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 function ProductPage() {
-    const [login, setLogin] = useState(false)
+    const [login, setLogin] = useState(true)
     const { push } = useRouter()
 
     useEffect(() => {
