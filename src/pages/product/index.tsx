@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import ProductView from '@/views/Product';
 
 function ProductPage() {
     const [login, setLogin] = useState(true)
+    const [products, setProducts] = useState([])
     const { push } = useRouter()
 
     useEffect(() => {
@@ -11,8 +13,16 @@ function ProductPage() {
         }
     }, []);
 
+    useEffect(() => {
+        fetch('api/products')
+            .then((res) => res.json())
+            .then((response) => {
+                setProducts(response.data)
+            })
+    }, []);
+
     return (
-        <div>ProductPage</div>
+        <ProductView products={products} />
     )
 }
 
