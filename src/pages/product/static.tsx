@@ -1,5 +1,5 @@
+import ProductView from '@/views/Product'
 import React from 'react'
-import ProductView from '../../views/Product/index'
 
 type Props = {
     id: string
@@ -9,8 +9,9 @@ type Props = {
     category: string
 }
 
-export async function getServerSideProps() {
-    // fetch data
+
+
+export async function getStaticProps() {
     const res = await fetch('http://localhost:3000/api/products')
     const response = await res.json()
     console.log(response);
@@ -22,13 +23,10 @@ export async function getServerSideProps() {
     }
 }
 
-
-const ProductServerSide = ({ products }: { products: Props[] }) => {
+const ProductStaticPage = ({ products }: { products: Props[] }) => {
     return (
         <ProductView products={products} />
     )
 }
 
-export default ProductServerSide
-
-// di panggil saat halaman nya di buka 
+export default ProductStaticPage
