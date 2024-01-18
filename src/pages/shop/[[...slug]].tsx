@@ -1,7 +1,10 @@
+import { fetcher } from '@/lib/swr/swr'
 import { useRouter } from 'next/router'
+import useSWR from 'swr'
 const ShopPage = () => {
     const { query } = useRouter()
-    console.log(query);
+
+    const { data, error, isLoading } = useSWR(`api/products/${query.product}`, fetcher)
 
     return (
         <div>
