@@ -20,15 +20,6 @@ function ProductPage() {
     const { data, error, isLoading } = useSWR('api/products', fetcher)
     console.log(data, error, isLoading);
 
-
-    // useEffect(() => {
-    //     fetch('api/products')
-    //         .then((res) => res.json())
-    //         .then((response) => {
-    //             setProducts(response.data)
-    //         })
-    // }, []);
-
     return (
         <ProductView products={isLoading ? [] : data.data} />
     )

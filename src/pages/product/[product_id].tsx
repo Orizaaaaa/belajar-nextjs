@@ -8,7 +8,7 @@ function DetailProductPage() {
     const { query } = useRouter()
 
     const { data, error, isLoading } = useSWR(
-        `/api/product/${query.id}`,
+        `/api/product/${query.product_id}`,
         fetcher
     );
 
