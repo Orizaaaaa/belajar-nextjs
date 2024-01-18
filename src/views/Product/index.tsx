@@ -11,7 +11,6 @@ type Props = {
 
 
 const ProductView = ({ products }: { products: Props[] }) => {
-    console.log(products);
 
     return (
         <div className={styles.product} >
@@ -29,7 +28,7 @@ const ProductView = ({ products }: { products: Props[] }) => {
                         <p className="product-category">
                             {products.category}
                         </p>
-                        <p className='product-price'> {products.price} </p>
+                        <p className='product-price'> {products.price && products.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} </p>
                     </Link>
                 ))}
             </div>
