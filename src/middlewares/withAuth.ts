@@ -1,4 +1,3 @@
-import { url } from "inspector";
 import { getToken } from "next-auth/jwt";
 import { NextFetchEvent, NextMiddleware, NextRequest, NextResponse } from "next/server";
 
