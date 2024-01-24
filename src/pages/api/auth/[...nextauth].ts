@@ -18,7 +18,6 @@ const authOption: NextAuthOptions = {
                 const { email, password, fullName } = credentials as { email: string, password: string, fullName: string }
                 const user: any = { id: 1, email: email, password: password, fullName: fullName }
                 if (user) {
-                    console.log(user);
                     return user
                 } else {
                     return null
