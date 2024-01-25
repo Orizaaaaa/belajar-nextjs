@@ -6,4 +6,4 @@ export const mainMiddleware = (req: NextRequest) => {
     return res
 }
 
-export default withAuth(mainMiddleware, ['/profile'])
+export default withAuth(mainMiddleware, ['/profile', '/admin'])

@@ -1,41 +1,56 @@
-import { query } from 'firebase/firestore'
-import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import React from 'react'
 
-const LoginViews = () => {
-    const { push, query } = useRouter()
+const RegisterView = () => {
+    const router = useRouter()
 
-    const callbackUrl: any = query.callbackUrl || '/'
     const handleSubmit = async (e: any) => {
         e.preventDefault()
-        try {
-            const res = await signIn('credentials', {
-                redirect: false,
-                email: e.target.email.value,
-                password: e.target.password.value,
-                callbackUrl
-            })
-            if (!res?.error) {
-                push(callbackUrl)
-            } else {
-                console.log(res);
-            }
-        } catch (error) {
-            console.log(error);
+        const data = {
+            email: e.target.email.value,
+            password: e.target.password.value,
+            fullName: e.target.fullName.value
+        }
+        const result = await fetch('/api/register', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+
+        if (result.status === 200) {
+            console.log('success')
+            e.target.reset()
+            router.push('/auth/login')
         }
     }
-    return (
-        <div className='container mx-auto my-52' >
 
-            <form className='w-3/6 mx-auto' onSubmit={handleSubmit} >
+    return (
+        <div className='container mx-auto my-10' >
+            <h3 className='text-3xl font-semibold mb-5' >Register</h3>
+            <form onSubmit={handleSubmit}>
                 <div className="space-y-12">
-                    <div className=" border-gray-900/10 pb-12">
-                        <h3 className='text-3xl font-semibold mb-5 ' >Login </h3>
+                    <div className="border-b border-gray-900/10 pb-12">
                         <h2 className="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
                         <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p>
 
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                            <div className="sm:col-span-3">
+                                <label htmlFor="fullName" className="block text-sm font-medium leading-6 text-gray-900">
+                                    Full Name
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        type="text"
+                                        name="fullName"
+                                        id="fullName"
+                                        autoComplete="given-name"
+                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    />
+                                </div>
+                            </div>
 
                             <div className="sm:col-span-4">
                                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
@@ -66,11 +81,12 @@ const LoginViews = () => {
                                     />
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
                 </div>
-                <p>dont have an account ? <Link className='text-blue-500' href="/auth/register">register</Link></p>
+                <p>have an account ? <Link className='text-blue-500' href="/auth/login">login</Link></p>
                 <div className="mt-6 flex items-center justify-end gap-x-6">
                     <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
                         Cancel
@@ -86,4 +102,5 @@ const LoginViews = () => {
         </div>
     )
 }
-export default LoginViews
+
+export default RegisterView

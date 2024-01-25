@@ -1,3 +1,5 @@
+import { signIn } from "@/lib/firebase/service";
+import { compare } from "bcrypt";
 import nextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 const authOption: NextAuthOptions = {
@@ -10,15 +12,18 @@ const authOption: NextAuthOptions = {
             type: 'credentials',
             name: 'credentials',
             credentials: {
-                fullName: { label: "fullName", type: "text" },
                 email: { label: "email", type: "email" },
                 password: { label: "password", type: "password" }
             },
             async authorize(credentials) {
-                const { email, password, fullName } = credentials as { email: string, password: string, fullName: string }
-                const user: any = { id: 1, email: email, password: password, fullName: fullName }
+                const { email, password } = credentials as { email: string, password: string, }
+                const user: any = await signIn({ email })
                 if (user) {
-                    return user
+                    const passwordConfirm = await compare(password, user.password)
+                    if (passwordConfirm) {
+                        return user
+                    }
+                    return null
                 } else {
                     return null
                 }
@@ -30,6 +35,7 @@ const authOption: NextAuthOptions = {
             if (account?.provider === 'credentials') {
                 token.email = user.email
                 token.fullName = user.fullName
+                token.role = user.role
             }
             return token
 
@@ -45,9 +51,17 @@ const authOption: NextAuthOptions = {
             if ('fullName' in token) {
                 session.user.fullName = token.fullName
             }
+
+            if ('role' in token) {
+                session.user.role = token.role
+            }
             return session
         }
+    },
+    pages: {
+        signIn: '/auth/login',
     }
+
 }
 
 export default nextAuth(authOption)
