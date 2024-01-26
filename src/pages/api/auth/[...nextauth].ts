@@ -2,6 +2,9 @@ import { signIn } from "@/lib/firebase/service";
 import { compare } from "bcrypt";
 import nextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+
+
+//login menggunakan next-auth
 const authOption: NextAuthOptions = {
     session: {
         strategy: 'jwt',
@@ -19,6 +22,7 @@ const authOption: NextAuthOptions = {
                 const { email, password } = credentials as { email: string, password: string, }
                 const user: any = await signIn({ email })
                 if (user) {
+                    // compare password yang sudah di hashing
                     const passwordConfirm = await compare(password, user.password)
                     if (passwordConfirm) {
                         return user
@@ -31,6 +35,7 @@ const authOption: NextAuthOptions = {
         })
     ],
     callbacks: {
+        // ngambil data token dari firebase
         jwt({ token, account, profile, user }: any) {
             if (account?.provider === 'credentials') {
                 token.email = user.email

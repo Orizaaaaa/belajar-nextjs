@@ -48,7 +48,7 @@ export async function signUp(userData: { fullName: string, email: string, passwo
     }
 }
 
-
+// penggambilan login firebase dan next auth
 export async function signIn(userData: { email: string }) {
     const q = query(collection(firestore, "users"), where("email", "==", userData.email))
     const snapshot = await getDocs(q)
