@@ -28,16 +28,15 @@ const LoginViews = () => {
     return (
         <div className='container mx-auto my-52' >
 
-            <form className='w-3/6 mx-auto' onSubmit={handleSubmit} >
+            <form className='w-3/6 mx-auto border border-gray-900/10 p-10 rounded-lg' onSubmit={handleSubmit} >
                 <div className="space-y-12">
                     <div className=" border-gray-900/10 pb-12">
                         <h3 className='text-3xl font-semibold mb-5 ' >Login </h3>
                         <h2 className="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
                         <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p>
 
-                        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-
-                            <div className="sm:col-span-4">
+                        <div className="mt-10 grid ">
+                            <div className="w-full">
                                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                                     Email address
                                 </label>
@@ -52,7 +51,7 @@ const LoginViews = () => {
                                 </div>
                             </div>
 
-                            <div className="sm:col-span-4">
+                            <div className="w-full">
                                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                                     Password
                                 </label>
@@ -66,6 +65,15 @@ const LoginViews = () => {
                                     />
                                 </div>
                             </div>
+
+                            <button onClick={() => signIn('google', {
+                                callbackUrl,
+                                redirect: false
+                            })} className='mt-6 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold 
+                            text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 
+                            focus-visible:outline-offset-2 focus-visible:outline-indigo-600' type='button'  >Sign In With Google</button>
+
+
                         </div>
                     </div>
 
@@ -82,8 +90,8 @@ const LoginViews = () => {
                         Save
                     </button>
                 </div>
-            </form>
-        </div>
+            </form >
+        </div >
     )
 }
 export default LoginViews

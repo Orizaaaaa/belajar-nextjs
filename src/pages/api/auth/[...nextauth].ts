@@ -1,7 +1,8 @@
-import { signIn } from "@/lib/firebase/service";
+import { signIn, signInWithGoogle } from "@/lib/firebase/service";
 import { compare } from "bcrypt";
 import nextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 
 
 //login menggunakan next-auth
@@ -32,16 +33,41 @@ const authOption: NextAuthOptions = {
                     return null
                 }
             }
+        }),
+        GoogleProvider({
+            clientId: process.env.GOOGLE_OAUTH_CLIENT_ID || '',
+            clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET || '',
         })
     ],
     callbacks: {
         // ngambil data token dari firebase
-        jwt({ token, account, profile, user }: any) {
+        async jwt({ token, account, profile, user }: any) {
             if (account?.provider === 'credentials') {
                 token.email = user.email
                 token.fullName = user.fullName
                 token.role = user.role
             }
+
+            if (account?.provider === 'google') {
+                const data = {
+                    fullName: user.name,
+                    email: user.email,
+                    image: user.image,
+                    type: 'google',
+                }
+
+                await signInWithGoogle(data, (result: any) => {
+                    if (result.status) {
+                        token.email = result.data.email
+                        token.fullName = result.data.fullName
+                        token.image = result.data.image
+                        token.type = result.data.type
+                        token.role = result.data.role
+                    }
+                })
+                console.log(data);
+            }
+
             return token
 
 
@@ -55,6 +81,11 @@ const authOption: NextAuthOptions = {
 
             if ('fullName' in token) {
                 session.user.fullName = token.fullName
+            }
+
+
+            if ('image' in token) {
+                session.user.image = token.image
             }
 
             if ('role' in token) {
