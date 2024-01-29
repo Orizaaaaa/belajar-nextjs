@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import styles from './Product.module.scss'
+import Image from 'next/image'
 
 type Props = {
     id: string
@@ -20,7 +21,8 @@ const ProductView = ({ products }: { products: Props[] }) => {
                     <Link href={`/product/${products.id}`} className={styles.product_content_item} key={products.id}>
                         <h1>{products.name}</h1>
                         <div className={styles.product_img}>
-                            <img src={products.image} alt="product" />
+                            {/* <img src={products.image} alt="product" /> */}
+                            <Image src={products.image} alt="product" width={500} height={500} />
                         </div>
                         <h4 className="product-name">
                             {products.name}
